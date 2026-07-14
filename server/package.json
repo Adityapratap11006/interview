@@ -1,0 +1,25 @@
+{
+  "name": "prepilot-server",
+  "version": "0.0.0",
+  "description": "PrepPilot backend server",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js"
+  },
+  "keywords": [
+    "prepPilot",
+    "backend",
+    "mern"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0"
+  }
+}
