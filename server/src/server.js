@@ -10,6 +10,7 @@ const heatmapRoutes = require("./routes/heatmapRoutes");
 const studyListRoutes = require("./routes/studyListRoutes");
 const revisionRoutes = require("./routes/revisionRoutes");
 const companySheetRoutes = require("./routes/companySheetRoutes");
+const goalRoutes = require("./routes/goalRoutes");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api", heatmapRoutes);
 app.use("/api", studyListRoutes);
 app.use("/api", revisionRoutes);
 app.use("/api", companySheetRoutes);
+app.use("/api/goals", goalRoutes);
 
 const PORT = process.env.PORT || 3000;
 
