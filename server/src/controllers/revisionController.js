@@ -1,0 +1,24 @@
+"use strict";
+
+const Revision = require("../models/Revision");
+const Problem = require("../models/Problem");
+
+const createRevision = async (req, res) => {
+  try {
+    const { problemId, nextRevisionDate } = req.body;
+
+    if (!problemId) {
+      return res.status(400).json({\n        success: false,\n        message: \"Problem ID is required\",\n      });\n    }
+
+    if (!nextRevisionDate) {\n      return res.status(400).json({\n        success: false,\n        message: \"Next revision date is required\",\n      });\n    }\n
+    const problem = await Problem.findById(problemId);\n\n    if (!problem) {\n      return res.status(404).json({\n        success: false,\n        message: \"Problem not found\",\n      });\n    }\n\n    if (!problem.user.equals(req.user._id)) {\n      return res.status(403).json({\n        success: false,\n        message: \"Access denied - cannot create revision for other user's problem\",\n      });\n    }\n\n    const existingRevision = await Revision.findOne({\n      user: req.user._id,\n      problem: problemId,\n    });\n\n    if (existingRevision) {\n      return res.status(400).json({\n        success: false,\n        message: \"Revision already exists for this problem\",\n      });\n    }\n\n    const revision = new Revision({\n      user: req.user._id,\n      problem: problemId,\n      nextRevisionDate: new Date(nextRevisionDate),\n      status: \"Pending\",\n    });\n\n    await revision.save();\n\n    res.status(201).json({\n      success: true,\n      message: \"Revision created successfully\",\n      revision,\n    });\n  } catch (error) {\n    console.error(\"Create revision error:\", error);\n    if (error.name === \"ValidationError\") {\n      return res.status(400).json({\n        success: false,\n        message: error.message,\n      });\n    }\n    res.status(500).json({\n      success: false,\n      message: \"Server error while creating revision\",\n    });\n  }\n};
+
+const getRevisions = async (req, res) => {\n  try {\n    const revisions = await Revision.find({ user: req.user._id })\n      .populate(\"problem\")\n      .sort({ nextRevisionDate: 1 });\n\n    res.status(200).json({\n      success: true,\n      count: revisions.length,\n      revisions,\n    });\n  } catch (error) {\n    console.error(\"Get revisions error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while fetching revisions\",\n    });\n  }\n};
+
+const getDueRevisions = async (req, res) => {\n  try {\n    const today = new Date();\n\n    const dueRevisions = await Revision.find({\n      user: req.user._id,\n      status: \"Pending\",\n      nextRevisionDate: { $lte: today },\n    })\n      .populate(\"problem\")\n      .sort({ nextRevisionDate: 1 });\n\n    res.status(200).json({\n      success: true,\n      count: dueRevisions.length,\n      revisions: dueRevisions,\n    });\n  } catch (error) {\n    console.error(\"Get due revisions error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while fetching due revisions\",\n    });\n  }\n};
+
+const completeRevision = async (req, res) => {\n  try {\n    const revision = await Revision.findById(req.params.id);\n\n    if (!revision) {\n      return res.status(404).json({\n        success: false,\n        message: \"Revision not found\",\n      });\n    }\n\n    if (!revision.user.equals(req.user._id)) {\n      return res.status(403).json({\n        success: false,\n        message: \"Access denied\",\n      });\n    }\n\n    revision.status = \"Completed\";\n    revision.revisionCount += 1;\n    revision.lastRevisedAt = new Date();\n\n    await revision.save();\n\n    res.status(200).json({\n      success: true,\n      message: \"Revision completed successfully\",\n      revision,\n    });\n  } catch (error) {\n    console.error(\"Complete revision error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while completing revision\",\n    });\n  }\n};
+
+const deleteRevision = async (req, res) => {\n  try {\n    const revision = await Revision.findById(req.params.id);\n\n    if (!revision) {\n      return res.status(404).json({\n        success: false,\n        message: \"Revision not found\",\n      });\n    }\n\n    if (!revision.user.equals(req.user._id)) {\n      return res.status(403).json({\n        success: false,\n        message: \"Access denied\",\n      });\n    }\n\n    await revision.deleteOne();\n\n    res.status(200).json({\n      success: true,\n      message: \"Revision deleted successfully\",\n    });\n  } catch (error) {\n    console.error(\"Delete revision error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while deleting revision\",\n    });\n  }\n};
+
+module.exports = {\n  createRevision,\n  getRevisions,\n  getDueRevisions,\n  completeRevision,\n  deleteRevision,\n};
