@@ -12,6 +12,7 @@ const revisionRoutes = require("./routes/revisionRoutes");
 const companySheetRoutes = require("./routes/companySheetRoutes");
 const goalRoutes = require("./routes/goalRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
+const masteryRoutes = require("./routes/masteryRoutes");
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api", revisionRoutes);
 app.use("/api", companySheetRoutes);
 app.use("/api/goals", goalRoutes);
 app.use("/api", analyticsRoutes);
+app.use("/api", masteryRoutes);
 
 const PORT = process.env.PORT || 3000;
 
