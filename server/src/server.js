@@ -9,6 +9,7 @@ const streakRoutes = require("./routes/streakRoutes");
 const heatmapRoutes = require("./routes/heatmapRoutes");
 const studyListRoutes = require("./routes/studyListRoutes");
 const revisionRoutes = require("./routes/revisionRoutes");
+const companySheetRoutes = require("./routes/companySheetRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api", streakRoutes);
 app.use("/api", heatmapRoutes);
 app.use("/api", studyListRoutes);
 app.use("/api", revisionRoutes);
+app.use("/api", companySheetRoutes);
 
 const PORT = process.env.PORT || 3000;
 
