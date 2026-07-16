@@ -46,7 +46,13 @@ const createProblem = async (req, res) => {
 
 const getProblems = async (req, res) => {
   try {
-    const problems = await Problem.find({ user: req.user._id }).sort({ createdAt: -1 });
+    const filter = { user: req.user._id };
+
+    if (req.query.difficulty) filter.difficulty = req.query.difficulty;
+    if (req.query.status) filter.status = req.query.status;
+    if (req.query.topic) filter.topic = req.query.topic;
+
+    const problems = await Problem.find(filter).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
