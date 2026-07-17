@@ -14,6 +14,7 @@ const goalRoutes = require("./routes/goalRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const masteryRoutes = require("./routes/masteryRoutes");
 const roadmapRoutes = require("./routes/roadmapRoutes");
+const aiHintRoutes = require("./routes/aiHintRoutes");
 
 const app = express();
 
