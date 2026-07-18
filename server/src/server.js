@@ -18,6 +18,7 @@ const roadmapRoutes = require("./routes/roadmapRoutes");
 const aiHintRoutes = require("./routes/aiHintRoutes");
 const mockInterviewRoutes = require("./routes/mockInterviewRoutes");
 const resumeAnalyzerRoutes = require("./routes/resumeAnalyzerRoutes");
+const studyPlanRoutes = require("./routes/studyPlanRoutes");
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("/api", masteryRoutes);
 app.use("/api", roadmapRoutes);
 app.use("/api/ai", mockInterviewRoutes);
 app.use("/api/ai", resumeAnalyzerRoutes);
+app.use("/api/ai", studyPlanRoutes);
 
 const PORT = process.env.PORT || 3000;
 
