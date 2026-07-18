@@ -73,21 +73,49 @@ const getProblemById = async (req, res) => {
     const problem = await Problem.findById(req.params.id);
 
     if (!problem) {
-      return res.status(404).json({\n        success: false,\n        message: "Problem not found",\n      });\n    }
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
 
     if (!problem.user.equals(req.user._id)) {
-      return res.status(403).json({\n        success: false,\n        message: "Access denied",\n      });\n    }
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
 
-    res.status(200).json({\n      success: true,\n      problem,\n    });\n  }\n  catch (error) {\n    console.error("Get problem by ID error:", error);\n    res.status(500).json({\n      success: false,\n      message: "Server error while fetching problem",\n    });\n  }\n};\n
+    res.status(200).json({
+      success: true,
+      problem,
+    });
+  } catch (error) {
+    console.error("Get problem by ID error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching problem",
+    });
+  }
+};
+
 const updateProblem = async (req, res) => {
   try {
     const problem = await Problem.findById(req.params.id);
 
     if (!problem) {
-      return res.status(404).json({\n        success: false,\n        message: "Problem not found",\n      });\n    }
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
 
     if (!problem.user.equals(req.user._id)) {
-      return res.status(403).json({\n        success: false,\n        message: "Access denied",\n      });\n    }
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
 
     if (req.body.title !== undefined) problem.title = req.body.title;
     if (req.body.difficulty !== undefined) problem.difficulty = req.body.difficulty;
@@ -103,17 +131,51 @@ const updateProblem = async (req, res) => {
 
     await problem.save();
 
-    res.status(200).json({\n      success: true,\n      message: "Problem updated successfully",\n      problem,\n    });\n  }\n  catch (error) {\n    console.error("Update problem error:", error);\n    res.status(500).json({\n      success: false,\n      message: "Server Error",\n    });\n  }\n};\n
+    res.status(200).json({
+      success: true,
+      message: "Problem updated successfully",
+      problem,
+    });
+  } catch (error) {
+    console.error("Update problem error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 const deleteProblem = async (req, res) => {
   try {
     const problem = await Problem.findById(req.params.id);
 
     if (!problem) {
-      return res.status(404).json({\n        success: false,\n        message: "Problem not found",\n      });\n    }
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
 
     if (!problem.user.equals(req.user._id)) {
-      return res.status(403).json({\n        success: false,\n        message: "Access denied",\n      });\n    }
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
 
     await problem.deleteOne();
 
-    res.status(200).json({\n      success: true,\n      message: "Problem deleted successfully",\n    });\n  }\n  catch (error) {\n    console.error("Delete problem error:", error);\n    res.status(500).json({\n      success: false,\n      message: "Server Error",\n    });\n  }\n};\n\nmodule.exports = { createProblem, getProblems, getProblemById, updateProblem, deleteProblem };
+    res.status(200).json({
+      success: true,
+      message: "Problem deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete problem error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+module.exports = { createProblem, getProblems, getProblemById, updateProblem, deleteProblem };

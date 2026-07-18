@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const {\n  createStudyList,\n  getStudyLists,\n  getStudyListById,\n  addProblemToStudyList,\n  removeProblemFromStudyList,\n} = require("../controllers/studyListController");
+const {
+  createStudyList,
+  getStudyLists,
+  getStudyListById,
+  addProblemToStudyList,
+  removeProblemFromStudyList,
+} = require("../controllers/studyListController");
 const protect = require("../middleware/authMiddleware");
 
 router.post("/", protect, createStudyList);

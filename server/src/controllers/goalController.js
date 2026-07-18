@@ -141,8 +141,64 @@ const updateGoalProgress = async (req, res) => {
   }
 };
 
-const getGoalHistory = async (req, res) => {\n  try {\n    const userId = req.user._id;\n\n    const goals = await DailyGoal.find({ user: userId })\n      .sort({ date: -1 });\n\n    res.status(200).json({\n      success: true,\n      count: goals.length,\n      goals,\n    });\n  } catch (error) {\n    console.error(\"Get goal history error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while fetching goal history\",\n    });\n  }\n};
+const getGoalHistory = async (req, res) => {
+  try {
+    const userId = req.user._id;
 
-const deleteGoal = async (req, res) => {\n  try {\n    const goal = await DailyGoal.findById(req.params.id);\n\n    if (!goal) {\n      return res.status(404).json({\n        success: false,\n        message: \"Daily goal not found\",\n      });\n    }\n\n    if (!goal.user.equals(req.user._id)) {\n      return res.status(403).json({\n        success: false,\n        message: \"Access denied\",\n      });\n    }\n\n    await goal.deleteOne();\n\n    res.status(200).json({\n      success: true,\n      message: \"Daily goal deleted successfully\",\n    });\n  } catch (error) {\n    console.error(\"Delete goal error:\", error);\n    res.status(500).json({\n      success: false,\n      message: \"Server error while deleting goal\",\n    });\n  }\n};
+    const goals = await DailyGoal.find({ user: userId })
+      .sort({ date: -1 });
 
-module.exports = {\n  createDailyGoal,\n  getTodaysGoal,\n  updateGoalProgress,\n  getGoalHistory,\n  deleteGoal,\n};
+    res.status(200).json({
+      success: true,
+      count: goals.length,
+      goals,
+    });
+  } catch (error) {
+    console.error("Get goal history error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching goal history",
+    });
+  }
+};
+
+const deleteGoal = async (req, res) => {
+  try {
+    const goal = await DailyGoal.findById(req.params.id);
+
+    if (!goal) {
+      return res.status(404).json({
+        success: false,
+        message: "Daily goal not found",
+      });
+    }
+
+    if (!goal.user.equals(req.user._id)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
+
+    await goal.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: "Daily goal deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete goal error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while deleting goal",
+    });
+  }
+};
+
+module.exports = {
+  createDailyGoal,
+  getTodaysGoal,
+  updateGoalProgress,
+  getGoalHistory,
+  deleteGoal,
+};

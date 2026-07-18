@@ -25,7 +25,11 @@ const generateAiHint = async (req, res) => {
     }
 
     if (!problem.user.equals(userId)) {
-      return res.status(403).json({\n        success: false,\n        message: "Access denied",\n      });\n    }
+      return res.status(403).json({
+        success: false,
+        message: "Access denied",
+      });
+    }
 
     const learningProfileResponse = await axios.get(
       `http://localhost:3000/api/learning-profile`,
@@ -94,6 +98,50 @@ Personalize hints using weak/strong topics.`;
 
     try {
       const geminiResponse = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,\n        {\n          contents: [{ parts: [{ text: prompt }] }]\n        }\n      );\n\n      const aiResponse = geminiResponse.data.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+        {
+          contents: [{ parts: [{ text: prompt }] }]
+        }
+      );
 
-      res.status(200).json({\n        success: true,\n        message: "AI hints generated successfully",\n        data: {\n          problem: {\n            id: problem._id,\n            title: problem.title,\n            difficulty: problem.difficulty,\n            topic: problem.topic,\n          },\n          aiResponse,\n        },\n      });\n    } catch (geminiError) {\n      console.error("Gemini API error:", geminiError.response?.data || geminiError.message);\n\n      return res.status(500).json({\n        success: false,\n        message: "Failed to generate AI hints",\n      });\n    }\n  } catch (error) {\n    console.error("Generate AI hint error:", error);\n\n    if (error.code === 404) {\n      return res.status(404).json({\n        success: false,\n        message: "Problem not found",\n      });\n    }\n\n    return res.status(500).json({\n      success: false,\n      message: "Server error while generating AI hint",\n    });\n  }\n};\n\nmodule.exports = { generateAiHint };
+      const aiResponse = geminiResponse.data.candidates[0]?.content?.parts[0]?.text || "No response from AI.";
+
+      res.status(200).json({
+        success: true,
+        message: "AI hints generated successfully",
+        data: {
+          problem: {
+            id: problem._id,
+            title: problem.title,
+            difficulty: problem.difficulty,
+            topic: problem.topic,
+          },
+          aiResponse,
+        },
+      });
+    } catch (geminiError) {
+      console.error("Gemini API error:", geminiError.response?.data || geminiError.message);
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to generate AI hints",
+      });
+    }
+  } catch (error) {
+    console.error("Generate AI hint error:", error);
+
+    if (error.code === 404) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem not found",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error while generating AI hint",
+    });
+  }
+};
+
+module.exports = { generateAiHint };

@@ -1,4 +1,5 @@
 "use strict";
+require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
 
 const express = require("express");
 const connectDB = require("./config/db");
@@ -15,6 +16,8 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const masteryRoutes = require("./routes/masteryRoutes");
 const roadmapRoutes = require("./routes/roadmapRoutes");
 const aiHintRoutes = require("./routes/aiHintRoutes");
+const mockInterviewRoutes = require("./routes/mockInterviewRoutes");
+const resumeAnalyzerRoutes = require("./routes/resumeAnalyzerRoutes");
 
 const app = express();
 
@@ -32,6 +35,8 @@ app.use("/api/goals", goalRoutes);
 app.use("/api", analyticsRoutes);
 app.use("/api", masteryRoutes);
 app.use("/api", roadmapRoutes);
+app.use("/api/ai", mockInterviewRoutes);
+app.use("/api/ai", resumeAnalyzerRoutes);
 
 const PORT = process.env.PORT || 3000;
 
