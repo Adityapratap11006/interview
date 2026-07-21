@@ -18,6 +18,7 @@ function Hero() {
           className="max-w-2xl"
         >
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-sm text-cyan-200">
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-cyan-400/10 text-cyan-200">PP</span>
             <Sparkles size={14} />
             AI-powered placement prep for ambitious builders
           </div>

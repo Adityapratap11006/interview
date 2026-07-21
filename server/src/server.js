@@ -2,6 +2,7 @@
 require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") });
 
 const express = require("express");
+const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const problemRoutes = require("./routes/problemRoutes");
@@ -24,6 +25,14 @@ const app = express();
 
 connectDB();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
+app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api", dashboardRoutes);

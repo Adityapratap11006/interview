@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const links = ['Features', 'AI Tools', 'Analytics', 'Pricing']
@@ -13,8 +13,8 @@ function Navbar() {
       className="sticky top-4 z-50 mx-auto flex w-full max-w-7xl items-center justify-between rounded-full border border-white/10 bg-slate-950/70 px-4 py-3 shadow-[0_10px_60px_rgba(2,6,23,0.45)] backdrop-blur-xl sm:px-6"
     >
       <Link to="/" className="flex items-center gap-3 text-sm font-semibold tracking-[0.24em] text-slate-100 uppercase">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
-          <Sparkles size={16} />
+        <span className="inline-flex h-9 items-center rounded-full bg-cyan-400/10 px-3 py-2 text-cyan-300">
+          PP
         </span>
         PrepPilot
       </Link>
