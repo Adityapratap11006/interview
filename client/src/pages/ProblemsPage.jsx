@@ -3,6 +3,8 @@ import { Plus, Search, Grid, List, X, Check, Loader2 } from 'lucide-react'
 import PageCard from '../components/ui/PageCard'
 import ProblemsTable from '../components/problems/ProblemsTable'
 import ProblemForm from '../components/problems/ProblemForm'
+import DeleteConfirmationModal from '../components/ui/DeleteConfirmationModal'
+import AddToStudyListModal from '../components/studyLists/AddToStudyListModal'
 import { fetchProblems, createProblem, updateProblem, deleteProblem } from '../services/problems'
 
 const difficultyOptions = ['Easy', 'Medium', 'Hard']
@@ -21,6 +23,8 @@ export default function ProblemsPage() {
   const [selectedProblem, setSelectedProblem] = useState(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [problemToDelete, setProblemToDelete] = useState(null)
+  const [showAddToList, setShowAddToList] = useState(false)
+  const [problemToAddToList, setProblemToAddToList] = useState(null)
   const [selectedProblems, setSelectedProblems] = useState([])
   const [stats, setStats] = useState({ total: 0, solved: 0, progress: 0 })
 
@@ -172,6 +176,11 @@ export default function ProblemsPage() {
   const cancelDelete = () => {
     setShowDeleteConfirm(false)
     setProblemToDelete(null)
+  }
+
+  const openAddToStudyList = (problem) => {
+    setProblemToAddToList(problem)
+    setShowAddToList(true)
   }
 
   const handleSelectProblem = (id) => {
@@ -396,6 +405,7 @@ export default function ProblemsPage() {
                   setShowForm(true)
                 }}
                 onDelete={openDeleteConfirm}
+                onAddToStudyList={openAddToStudyList}
                 selectedProblems={selectedProblems}
                 onSelectProblem={handleSelectProblem}
                 onSelectAll={handleSelectAll}
@@ -413,6 +423,7 @@ export default function ProblemsPage() {
                       setShowForm(true)
                     }}
                     onDelete={openDeleteConfirm}
+                    onAddToStudyList={openAddToStudyList}
                     isSelected={selectedProblems.includes(problem._id)}
                     onSelect={handleSelectProblem}
                   />
@@ -441,6 +452,15 @@ export default function ProblemsPage() {
             onClose={cancelDelete}
             onConfirm={handleDelete}
             problemTitle={problems.find(p => p._id === problemToDelete)?.title}
+          />
+        )}
+
+        {showAddToList && problemToAddToList && (
+          <AddToStudyListModal
+            isOpen={showAddToList}
+            onClose={() => { setShowAddToList(false); setProblemToAddToList(null) }}
+            problemId={problemToAddToList._id}
+            problemTitle={problemToAddToList.title}
           />
         )}
       </div>

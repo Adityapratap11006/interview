@@ -5,6 +5,8 @@ import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
 import DashboardPage from '../pages/DashboardPage'
 import ProblemsPage from '../pages/ProblemsPage'
+import StudyListsPage from '../pages/StudyListsPage'
+import StudyListDetailPage from '../pages/StudyListDetailPage'
 
 function AppRoutes() {
   return (
@@ -15,6 +17,8 @@ function AppRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/problems" element={<ProblemsPage />} />
+        <Route path="/study-lists" element={<StudyListsPage />} />
+        <Route path="/study-lists/:id" element={<StudyListDetailPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

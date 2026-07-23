@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
-import { Edit2, Trash2, Link, CheckSquare, Square } from 'lucide-react'
+import { Edit2, Trash2, Link, CheckSquare, Square, ListPlus } from 'lucide-react'
 
-function Row({p, onEdit, onDelete, isSelected, onSelect}){
+function Row({p, onEdit, onDelete, isSelected, onSelect, onAddToStudyList}){
   return (
     <tr className="hover:bg-white/3 transition">
       <td className="px-3 py-2">
@@ -16,6 +16,7 @@ function Row({p, onEdit, onDelete, isSelected, onSelect}){
       <td className="px-3 py-2 text-sm text-slate-400">{p.attemptCount}</td>
       <td className="px-3 py-2 flex items-center gap-2">
         {p.leetcodeLink && <a href={p.leetcodeLink} target="_blank" rel="noreferrer" className="text-cyan-300"><Link size={16}/></a>}
+        {onAddToStudyList && <button onClick={()=>onAddToStudyList(p)} className="p-1 rounded-md hover:bg-cyan-500/20 text-slate-400 hover:text-cyan-300"><ListPlus size={16}/></button>}
         <button onClick={()=>onEdit(p)} className="p-1 rounded-md hover:bg-white/5"><Edit2 size={16}/></button>
         <button onClick={()=>onDelete(p._id)} className="p-1 rounded-md hover:bg-red-600/30"><Trash2 size={16}/></button>
       </td>
@@ -23,7 +24,7 @@ function Row({p, onEdit, onDelete, isSelected, onSelect}){
   )
 }
 
-export default function ProblemsTable({data, loading, onEdit, onDelete, selectedProblems, onSelectProblem, onSelectAll}){
+export default function ProblemsTable({data, loading, onEdit, onDelete, selectedProblems, onSelectProblem, onSelectAll, onAddToStudyList}){
   const [page, setPage] = useState(1)
   const perPage = 10
   const total = data.length
@@ -63,7 +64,7 @@ export default function ProblemsTable({data, loading, onEdit, onDelete, selected
         </thead>
         <tbody>
           {loading ? <tr><td colSpan={7} className="p-6 text-center">Loading...</td></tr> : (
-            visible.map(p => <Row key={p._id} p={p} onEdit={onEdit} onDelete={onDelete} isSelected={selectedProblems.includes(p._id)} onSelect={onSelectProblem} />)
+            visible.map(p => <Row key={p._id} p={p} onEdit={onEdit} onDelete={onDelete} isSelected={selectedProblems.includes(p._id)} onSelect={onSelectProblem} onAddToStudyList={onAddToStudyList} />)
           )}
         </tbody>
       </table>

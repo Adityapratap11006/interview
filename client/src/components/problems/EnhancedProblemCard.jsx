@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { Check, Clock, ExternalLink, FileText, RotateCw, Trash2, Edit2, X } from 'lucide-react'
+import { Check, Clock, ExternalLink, FileText, RotateCw, Trash2, Edit2, X, ListPlus } from 'lucide-react'
 import { useState } from 'react'
 
-export default function EnhancedProblemCard({ problem, onEdit, onDelete, isSelected, onSelect }) {
+export default function EnhancedProblemCard({ problem, onEdit, onDelete, isSelected, onSelect, onAddToStudyList }) {
   const [showNotes, setShowNotes] = useState(false)
   const [optimisticStatus, setOptimisticStatus] = useState(problem.status)
   const [optimisticAttempts, setOptimisticAttempts] = useState(problem.attemptCount)
@@ -242,6 +242,15 @@ export default function EnhancedProblemCard({ problem, onEdit, onDelete, isSelec
             >
               <FileText size={14} />
             </button>
+            {onAddToStudyList && (
+              <button
+                onClick={() => onAddToStudyList(problem)}
+                className="p-2 hover:bg-cyan-500/20 rounded-lg transition-colors text-slate-400 hover:text-cyan-300"
+                title="Add to study list"
+              >
+                <ListPlus size={14} />
+              </button>
+            )}
             <button
               onClick={handleLeetCodeOpen}
               className="p-2 hover:bg-blue-500/20 rounded-lg transition-colors text-slate-400 hover:text-blue-300"

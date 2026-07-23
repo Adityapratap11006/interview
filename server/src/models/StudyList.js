@@ -18,6 +18,16 @@ const studyListSchema = new mongoose.Schema(
       required: [true, "User ID is required"],
       ref: "User",
     },
+    color: {
+      type: String,
+      trim: true,
+      default: "#22d3ee",
+    },
+    icon: {
+      type: String,
+      trim: true,
+      default: "Bookmark",
+    },
     problems: [
       {
         type: mongoose.Schema.Types.ObjectId,

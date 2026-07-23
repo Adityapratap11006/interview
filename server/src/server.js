@@ -48,7 +48,7 @@ app.use("/api/problems", problemRoutes);
 app.use("/api", dashboardRoutes);
 app.use("/api", streakRoutes);
 app.use("/api", heatmapRoutes);
-app.use("/api", studyListRoutes);
+app.use("/api/study-lists", studyListRoutes);
 app.use("/api", revisionRoutes);
 app.use("/api", companySheetRoutes);
 app.use("/api/goals", goalRoutes);

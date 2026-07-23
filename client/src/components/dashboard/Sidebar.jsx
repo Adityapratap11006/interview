@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
-import { Home, BookOpen, Cpu, Zap, FileText, PieChart, Settings, LogOut } from 'lucide-react'
+import { Home, BookOpen, ListChecks, Cpu, Zap, FileText, PieChart, Settings, LogOut } from 'lucide-react'
 
 const menu = [
   { label: 'Dashboard', icon: Home },
   { label: 'Problems', icon: BookOpen },
+  { label: 'Study Lists', icon: ListChecks },
   { label: 'Study Plan', icon: Cpu },
   { label: 'AI Assistant', icon: Zap },
   { label: 'Resume Analyzer', icon: FileText },
@@ -30,7 +31,7 @@ export default function Sidebar({ collapsed }) {
 
       <nav className="flex-1 space-y-2 mt-3">
         {menu.map((m) => {
-          const path = m.label === 'Dashboard' ? '/dashboard' : m.label === 'Problems' ? '/problems' : '#'
+          const path = m.label === 'Dashboard' ? '/dashboard' : m.label === 'Problems' ? '/problems' : m.label === 'Study Lists' ? '/study-lists' : '#'
           return (
             <a key={m.label} href={path} className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-white/5 transition-colors text-sm">
               <m.icon size={18} className="text-cyan-300" />
