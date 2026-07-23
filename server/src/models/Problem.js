@@ -74,11 +74,11 @@ const problemSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: [true, "User ID is required"],
-      ref: "User",
-    },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "User ID is required"],
+    ref: "User",
+  },
   },
   {
     timestamps: true,

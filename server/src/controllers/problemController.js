@@ -4,6 +4,10 @@ const Problem = require("../models/Problem");
 
 const createProblem = async (req, res) => {
   try {
+    console.log('=== CREATE PROBLEM REQUEST ===');
+    console.log('req.body:', req.body);
+    console.log('req.user:', req.user);
+
     const { title, leetcodeLink, difficulty, topic } = req.body;
 
     if (!title || !leetcodeLink || !difficulty || !topic) {
@@ -28,6 +32,7 @@ const createProblem = async (req, res) => {
       user: req.user._id,
     });
 
+    console.log('Problem instance:', problem);
     await problem.save();
 
     res.status(201).json({
@@ -37,6 +42,7 @@ const createProblem = async (req, res) => {
     });
   } catch (error) {
     console.error("Create problem error:", error);
+    console.error("Error stack:", error.stack);
     res.status(500).json({
       success: false,
       message: "Server error while creating problem",
